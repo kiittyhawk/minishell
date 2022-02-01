@@ -6,7 +6,7 @@
 #    By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/20 22:28:49 by jgyles            #+#    #+#              #
-#    Updated: 2022/01/22 20:52:26 by jgyles           ###   ########.fr        #
+#    Updated: 2022/02/01 18:08:41 by jgyles           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ SRCDIR	=	srcs
 NAME	=	minishell
 
 LIB		=	./Libft/libft.a
-SRC		=	main.c parser/cut_commands.c parser/parser.c
+SRC		=	main.c parser.c wrong_redirect.c \
+			check_syntax.c 
 
 SRC		:=	$(addprefix $(SRCDIR)/, $(SRC))
 OBJ		=	$(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(SRC:.c=.o))

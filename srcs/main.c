@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/01/21 22:14:06 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/01 18:07:42 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	parse_env(char **env, t_env **data)
 	data = &tmp;
 }
 
-void	print_all(t_env **data, char *flag)
+void	print_env(t_env **data, char *flag)
 {
 	t_env	*elem;
 
@@ -198,6 +198,7 @@ int	main(int ac, char **av, char **env)
 	}
 	parse_env(env, &envp);
 	shlvl_increment(envp);
-	print_all(&envp, "USER");
+	printf("%d\n", parser("     \n ;   dddd"));
+	// print_env(&envp, "USER");
 	// printf("key = %s sep = %s val = %s\n", envp->key, envp->sep, envp->value);
 }
