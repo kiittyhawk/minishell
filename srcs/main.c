@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/01 18:07:42 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/01 19:05:50 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,7 @@ int	main(int ac, char **av, char **env)
 	}
 	parse_env(env, &envp);
 	shlvl_increment(envp);
-	printf("%d\n", parser("     \n ;   dddd"));
+	printf("%d\n", parser("     \n   ' dddd"));
 	// print_env(&envp, "USER");
 	// printf("key = %s sep = %s val = %s\n", envp->key, envp->sep, envp->value);
 }

@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 17:50:42 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/01 17:57:36 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/01 19:04:09 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,44 @@ int	wrong_semicolon(char *line)
 	return (0);
 }
 
+int	unclose_quotes(char *line)
+{
+	int	i;
+
+	i = -1;
+	while (line [++i])
+	{
+		if (line[i] == '\'')
+		{
+			i++;
+			while (line[i] != '\'' && line[i])
+				i++;
+			if (line[i] != '\'')
+				return (1);
+		}
+	}
+	return (0);
+}
+
+int	unclose_double_quotes(char *line)
+{
+	int	i;
+
+	i = -1;
+	while (line [++i])
+	{
+		if (line[i] == '\"')
+		{
+			i++;
+			while (line[i] != '\"' && line[i])
+				i++;
+			if (line[i] != '\"')
+				return (1);
+		}
+	}
+	return (0);
+}
+
 char	*search_err(char *line)
 {
 	if (line[0] == '|' && line[1] == '|')
@@ -79,6 +117,10 @@ char	*search_err(char *line)
 		return (wrong_redirects(line));
 	else if (empty_redirects(line))
 		return ("newline");
+	else if (unclose_quotes(line))
+		return ("\'");
+	else if (unclose_double_quotes(line))
+		return ("\"");
 	else
 		return (NULL);
 }
