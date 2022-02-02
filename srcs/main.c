@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/01 19:05:50 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/02 19:16:48 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,41 +96,22 @@ void	add_env(char *env, t_env **envp)
 	}
 	// printf("val = %s\n", val);
 	add_elem(envp, init_elem(key, sep, val));
-	// tmp = *envp;
-	// envp = &tmp;
-	// if (*envp == NULL)
-	// {
-	// 	printf("val = %s\n", val);
-	// 	*envp = add_new_env(key, sep, val);
-	// }
-	// else
-	// {
-	// 	tmp = *envp;
-	// 	while (tmp->next != NULL)
-	// 	{
-	// 		tmp = tmp->next;
-	// 	}
-	// 	tmp->next = add_new_env(key, sep, val);
-	// }
-	// // free(key);
-	// free(sep);
-	// free(val);
 }
 
-void	parse_env(char **env, t_env **data)
+void	parse_env(char **env, t_all *data)
 {
 	int	i;
-	t_env	*tmp;
+	t_all	*tmp;
 
 	i = -1;
-	tmp = *data;
+	tmp = data;
 	while (env[++i])
 	{
 		// printf("%s\n", env[i]);
-		add_env(env[i], data);
-		tmp = *data;
+		add_env(env[i], &data->env);
+		tmp = data;
 	}
-	data = &tmp;
+	data = tmp;
 }
 
 void	print_env(t_env **data, char *flag)
@@ -184,21 +165,35 @@ void	shlvl_increment(t_env *envp)
 	}
 }
 
+void	init_struct(t_all **data)
+{
+	(*data) = (t_all *)malloc(sizeof (t_all));
+	if (!(*data))
+		return (1);
+	(*data)->env = NULL;
+	(*data)->cmd = NULL;
+	(*data)->cmd_count = 0;
+	(*data)->err = 0;
+}
+
 int	main(int ac, char **av, char **env)
 {
 	// int i = -1;
 	// while(env[++i])
 	// 	printf("%s\n", env[i]);
-	t_env	*envp;
+	t_all	*data;
 	(void)av;
 
+	init_struct(&data);
 	if (ac != 1)
 	{
 		exit(0);
 	}
-	parse_env(env, &envp);
-	shlvl_increment(envp);
-	printf("%d\n", parser("     \n   ' dddd"));
+	parse_env(env, data);
+	shlvl_increment(data);
+	char	*line = "ls -la | wc -l";
+	int i = parser(line);
+	// printf("%d\n", parser("     \n   ' dddd"));
 	// print_env(&envp, "USER");
 	// printf("key = %s sep = %s val = %s\n", envp->key, envp->sep, envp->value);
 }

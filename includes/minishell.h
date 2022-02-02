@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/01 18:01:35 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/02 18:50:08 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,21 @@ typedef struct s_env
 	struct s_env	*alpha_next;
 }	t_env;
 
+typedef struct s_cmds
+{
+	char			**cmd;
+	int				built;
+	struct s_cmd	*next;
+}	t_cmds;
+
+typedef struct s_all
+{
+	t_env	**env;
+	t_cmds	*cmd;
+	int		cmd_count;
+	int		err;
+}	t_all;
+
 /*check_syntax*/
 void 	skip_spaces(char **line);
 int		wrong_pipe(char *line);
@@ -51,7 +66,7 @@ int		parser(char *line);
 
 /*parse_env*/
 void	add_env(char *env, t_env **envp);
-void	parse_env(char **env, t_env **data);
+void	parse_env(char **env, t_all *data);
 void	print_env(t_env **data, char *flag);
 void	increment(t_env *envp);
 void	shlvl_increment(t_env *envp);
