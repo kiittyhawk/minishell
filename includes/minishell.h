@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/02 18:50:08 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/03 19:30:03 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,11 @@ char	*first_redirect(char *line);
 char	*wrong_redirects(char *line);
 int		empty_redirects(char *line);
 char	*search_err(char *line);
+char	*check_quot(char *line);
 
 /*parcer*/
 int		check_syntax(char *line);
-int		parser(char *line);
+int		parser(char *line, t_all *data);
 
 /*parse_env*/
 void	add_env(char *env, t_env **envp);
@@ -75,5 +76,12 @@ void	shlvl_increment(t_env *envp);
 t_env	**init_env();
 t_env	*init_elem(char *key, char *sep, char *val);
 void	add_elem(t_env **head, t_env *elem);
+
+/*line_handler*/
+char	*replace_env(char *line, int start, char *key, char *value);
+char	*get_env(char *line, t_env *env, int *i);
+char	*quotes_handler(char *line, int *i);
+char	*remove_double_quotes(char *line, int *i);
+char	*double_quotes_handler(char *line, int *i, t_all *data);
 
 #endif

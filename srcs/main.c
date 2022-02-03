@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/02 19:16:48 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/03 19:13:13 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void	parse_env(char **env, t_all *data)
 	while (env[++i])
 	{
 		// printf("%s\n", env[i]);
-		add_env(env[i], &data->env);
+		add_env(env[i], data->env);
 		tmp = data;
 	}
 	data = tmp;
@@ -167,10 +167,10 @@ void	shlvl_increment(t_env *envp)
 
 void	init_struct(t_all **data)
 {
-	(*data) = (t_all *)malloc(sizeof (t_all));
+	(*data) = (t_all *)malloc(sizeof(t_all));
 	if (!(*data))
-		return (1);
-	(*data)->env = NULL;
+		return ;
+	(*data)->env = (t_env **)malloc(sizeof(t_env *));
 	(*data)->cmd = NULL;
 	(*data)->cmd_count = 0;
 	(*data)->err = 0;
@@ -190,9 +190,10 @@ int	main(int ac, char **av, char **env)
 		exit(0);
 	}
 	parse_env(env, data);
-	shlvl_increment(data);
-	char	*line = "ls -la | wc -l";
-	int i = parser(line);
+	shlvl_increment(*data->env);
+	char	*line = "123 '$GDK_BACKEND' \"$GDK_BACKEND\"";
+	int i = parser(line, data);
+	return (i);
 	// printf("%d\n", parser("     \n   ' dddd"));
 	// print_env(&envp, "USER");
 	// printf("key = %s sep = %s val = %s\n", envp->key, envp->sep, envp->value);
