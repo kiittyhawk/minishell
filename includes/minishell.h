@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/03 19:30:03 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/07 15:33:25 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_cmds
 {
 	char			**cmd;
 	int				built;
-	struct s_cmd	*next;
+	struct s_cmds	*next;
 }	t_cmds;
 
 typedef struct s_all
@@ -62,7 +62,7 @@ char	*search_err(char *line);
 char	*check_quot(char *line);
 
 /*parcer*/
-int		check_syntax(char *line);
+int		check_syntax(char *line, t_all *data);
 int		parser(char *line, t_all *data);
 
 /*parse_env*/
@@ -83,5 +83,8 @@ char	*get_env(char *line, t_env *env, int *i);
 char	*quotes_handler(char *line, int *i);
 char	*remove_double_quotes(char *line, int *i);
 char	*double_quotes_handler(char *line, int *i, t_all *data);
+
+/*err_handler*/
+char	*return_err(char *line, int *i, t_all *data);
 
 #endif

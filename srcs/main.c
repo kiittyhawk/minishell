@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/03 19:13:13 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/07 15:29:42 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,7 @@ int	main(int ac, char **av, char **env)
 	}
 	parse_env(env, data);
 	shlvl_increment(*data->env);
-	char	*line = "123 '$GDK_BACKEND' \"$GDK_BACKEND\"";
+	char	*line = "123 '$GDK_BACKEND'$? \"$GDK_BACKEND\" |  '$GDK_BACKEND''$GDK_BACKEND' $?";
 	int i = parser(line, data);
 	return (i);
 	// printf("%d\n", parser("     \n   ' dddd"));

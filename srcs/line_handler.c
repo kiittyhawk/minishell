@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 19:27:55 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/03 19:30:09 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/07 15:59:06 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*get_env(char *line, t_env *env, int *i)
 		env = env->next;
 	}
 	line = replace_env(line, start, key, value);
-	*i = start - 1 + ft_strlen(value);
+	*i = start - 2 + ft_strlen(value);
 	free(key);
 	return (line);
 }
@@ -80,11 +80,8 @@ char	*quotes_handler(char *line, int *i)
 	j = 0;
 	new_line = malloc(ft_strlen(line) - 1);
 	(*i)++;
-	// while (line[*i] && line[*i] != '\'')
-	// 	(*i)++;
 	while (j < start)
 	{
-		// if (line[j] == '\'')
 		new_line[j] = line[j];
 		j++;
 	}
@@ -94,7 +91,7 @@ char	*quotes_handler(char *line, int *i)
 		(*i)++;
 		j++;
 	}
-	start = *i;
+	start = j;
 	(*i)++;
 	while (line[*i])
 	{
@@ -103,7 +100,7 @@ char	*quotes_handler(char *line, int *i)
 		j++;
 	}
 	new_line[j] = '\0';
-	*i = start;
+	*i = start - 1;
 	return (new_line);
 }
 
@@ -131,6 +128,7 @@ char	*remove_double_quotes(char *line, int *i)
 		(*i)++;
 		j++;
 	}
+	start = *i;
 	(*i)++;
 	while (line[*i])
 	{
@@ -139,20 +137,29 @@ char	*remove_double_quotes(char *line, int *i)
 		j++;
 	}
 	new_line[j] = '\0';
-	*i = start;
+	*i = start - 1;
 	return (new_line);
 }
 
 char	*double_quotes_handler(char *line, int *i, t_all *data)
 {
-	line = remove_double_quotes(line, i);
+	int	start;
+
+	start = *i;
+	(*i)++;
 	while (line[*i] && line[*i] != '"')
 	{
 		if (line[*i] == '$' && (line[*i + 1] == '_' || ft_isalpha(line[*i + 1])))
 		{
 			line = get_env(line, *data->env, i);
 		}
+		if (line[*i] == '$' && line[*i + 1] == '?')
+		{
+			line = return_err(line, i, data);
+		}
 		(*i)++;
 	}
+	*i = start;
+	line = remove_double_quotes(line, i);
 	return (line);
 }
