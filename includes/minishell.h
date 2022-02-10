@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/07 15:33:25 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/10 16:50:13 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ typedef struct s_env
 	char			*key;
 	char			*sep;
 	char			*value;
+	int				pos;
 	struct s_env	*next;
-	struct s_env	*alpha_next;
 }	t_env;
 
 typedef struct s_cmds
@@ -86,5 +86,19 @@ char	*double_quotes_handler(char *line, int *i, t_all *data);
 
 /*err_handler*/
 char	*return_err(char *line, int *i, t_all *data);
+
+/*buildins*/
+void	env_buildin(t_env **envp);
+int		pwd_buildin(void);
+void	export_buildin(t_all *data, char *arg);
+int		unset(t_all *data, char *arg);
+
+/*sort_env*/
+char	*find_next(char **keys, t_env **env, int i);
+char	*find_last(t_env **env);
+char	*find_first(t_env **env);
+void	export_output(char **keys, t_env **env);
+int		is_more(char *str1, char *str2);
+char	**set_array(t_env **env, int *count);
 
 #endif

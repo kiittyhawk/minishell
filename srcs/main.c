@@ -6,11 +6,11 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/07 15:29:42 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/10 17:25:57 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 t_env	**init_env()
 {
@@ -48,6 +48,7 @@ t_env	*init_elem(char *key, char *sep, char *val)
 	elem->key = key;
 	elem->sep = sep;
 	elem->value = val;
+	elem->pos = 0;
 	elem->next = NULL;
 	return (elem);
 }
@@ -191,9 +192,21 @@ int	main(int ac, char **av, char **env)
 	}
 	parse_env(env, data);
 	shlvl_increment(*data->env);
-	char	*line = "123 '$GDK_BACKEND'$? \"$GDK_BACKEND\" |  '$GDK_BACKEND''$GDK_BACKEND' $?";
-	int i = parser(line, data);
-	return (i);
+	// export_buildin(data, NULL);
+	// unset(data, "TERM");
+	// export_buildin(data, NULL);
+	// export_buildin(data, "USER=hydra");
+	// export_buildin(data, "   rrr =   rrr");
+	// char line = 'G';
+	// char line2 = 'B';
+	// if (line > line2)
+	// 	printf("%d\n", 2);
+	// else
+	// 	printf("%d\n", 3);
+	// env_buildin(data->env);
+	// char	*line = "123 '$GDK_BACKEND'$? \"$GDK_BACKEND\" |  '$GDK_BACKEND''$GDK_BACKEND' $?";
+	// int i = parser(line, data);
+	// return (i);
 	// printf("%d\n", parser("     \n   ' dddd"));
 	// print_env(&envp, "USER");
 	// printf("key = %s sep = %s val = %s\n", envp->key, envp->sep, envp->value);

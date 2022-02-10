@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 23:30:41 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/07 15:57:31 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/09 12:58:46 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ char	*parse_line(char *line, t_all *data, t_cmds *cmd)
 		j++;
 	str = ft_substr(line, i, j - i);
 	free(line);
+	env_buildin(data->env);
 	// printf("%s\n", line);
 	// i = 0;
 	// while (cmd->cmd[i])
