@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 23:30:41 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/09 12:58:46 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/11 16:35:00 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_cmds	*new_cmd(void)
 
 	node = malloc(sizeof(t_cmds));
 	node->cmd = NULL;
-	node->built = 0;
+	node->flag = 0;
 	node->next = NULL;
 	return (node);
 }
@@ -96,13 +96,6 @@ char	*parse_line(char *line, t_all *data, t_cmds *cmd)
 	str = ft_substr(line, i, j - i);
 	free(line);
 	env_buildin(data->env);
-	// printf("%s\n", line);
-	// i = 0;
-	// while (cmd->cmd[i])
-	// {
-	// 	printf("%s\n", cmd->cmd[i]);
-	// 	i++;
-	// }
 	return (str);
 }
 
@@ -112,29 +105,20 @@ int	parser(char *line, t_all *data)
 
 	if (!line)
 		return (1);
-	// printf("%s\n", line);
 	if (check_syntax(line, data))
 		return (1);
 	data->cmd = new_cmd();
 	data->cmd_count = 1;
 	tmp = data->cmd;
 	line = parse_line(line, data, data->cmd);
-	// printf("%s\n", line);
-	// int i = -1;
-	// while (data->cmd->cmd[++i])
-	// 	printf("%s\n", data->cmd->cmd[i]);
 	while (line[0] && line[0] == '|')
 	{
 		data->cmd->next = new_cmd();
 		data->cmd = data->cmd->next;
 		data->cmd_count++;
 		line = parse_line(line, data, data->cmd);
-		// int i = -1;
-		// while (data->cmd->cmd[++i])
-		// 	printf("%s\n", data->cmd->cmd[i]);
 	}
 	data->cmd = tmp;
 	free(line);
-	// printf("%s\n", line);
 	return (0);
 }

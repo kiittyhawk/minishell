@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/10 16:50:13 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/11 16:34:42 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_env
 typedef struct s_cmds
 {
 	char			**cmd;
-	int				built;
+	int				flag;
 	struct s_cmds	*next;
 }	t_cmds;
 
