@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 23:30:41 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/11 16:35:00 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/17 15:44:38 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_cmds	*new_cmd(void)
 	node = malloc(sizeof(t_cmds));
 	node->cmd = NULL;
 	node->flag = 0;
+	node->args = NULL;
 	node->next = NULL;
 	return (node);
 }
@@ -47,22 +48,19 @@ char	*line_handler(char *line, t_all *data, int *i)
 		while (line[*i] && line[*i] == ' ')
 			(*i)++;
 		if (line[*i] == '\'')
-		{
 			line = quotes_handler(line, i);
-		}
 		if (line[*i] == '"')
-		{
 			line = double_quotes_handler(line, i, data);
-		}
-		if (line[*i] == '$' && line[*i + 1] == '?')
-		{
-			line = return_err(line, i, data);
-		}
 		if (line[*i] == '$' && (line[*i + 1] == '_' || ft_isalpha(line[*i + 1])))
-		{
 			line = get_env(line, *data->env, i);
-		}
-		(*i)++;
+		if (line[*i] == '$' && line[*i + 1] == '?')
+			line = return_err(line, i, data);
+		// if (line[*i] == '>' || line[*i] == '<')
+		// 	parse_redir(line, i, data);
+		if (line[*i] == '|')
+			data->cmd_count++;
+		else
+			(*i)++;
 	}
 	return (line);
 }
@@ -88,14 +86,12 @@ char	*parse_line(char *line, t_all *data, t_cmds *cmd)
 		new_cmd = ft_substr(line, start, i - 1);
 	else
 		new_cmd = ft_substr(line, start, i);
-	cmd->cmd = ft_split(new_cmd, ' ');
+	cmd->args = cmd_split(ft_split(new_cmd, ' '), cmd);
 	free(new_cmd);
 	j = i;
 	while (line[j])
 		j++;
 	str = ft_substr(line, i, j - i);
-	free(line);
-	env_buildin(data->env);
 	return (str);
 }
 

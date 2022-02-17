@@ -1,33 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_buidin.c                                        :+:      :+:    :+:   */
+/*   shlvl.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/11 13:56:00 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/17 16:43:05 by jgyles           ###   ########.fr       */
+/*   Created: 2022/02/16 17:13:52 by jgyles            #+#    #+#             */
+/*   Updated: 2022/02/16 17:14:08 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	cd_buildin(char **args)
+void	increment(t_env *envp)
 {
-	if (args[1])
+	int	lvl;
+
+	lvl = ft_atoi(envp->value) + 1;
+	free(envp->value);
+	envp->value = ft_itoa(lvl);
+}
+
+/*когда мы запускаем свой баш в системной баше, shlvl должен инкрементироваться*/
+void	shlvl_increment(t_env *envp)
+{
+	t_env	*env;
+
+	env = envp;
+	while (env)
 	{
-		if (count_str(args) > 2)
+		if (!ft_strcmp(env->key, "SHLVL"))
 		{
-			printf("minishell: cd: ");
-			ft_putendl_fd(strerror(E2BIG), 2);
-			return (2);
+			increment(env);
+			break ;
 		}
-		if (chdir(args[1]))
-		{
-			printf("minishell: cd: ");
-			ft_putendl_fd(strerror(errno), 2);
-			return (1);
-		}
+		env = env->next;
 	}
-	return (0);
 }

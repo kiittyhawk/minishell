@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_buidin.c                                        :+:      :+:    :+:   */
+/*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/11 13:56:00 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/17 16:43:05 by jgyles           ###   ########.fr       */
+/*   Created: 2022/02/16 17:16:28 by jgyles            #+#    #+#             */
+/*   Updated: 2022/02/17 13:56:56 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	cd_buildin(char **args)
+void	init_struct(t_all **data)
 {
-	if (args[1])
+	(*data) = (t_all *)malloc(sizeof(t_all));
+	if (!(*data))
+		return ;
+	(*data)->env = (t_env **)malloc(sizeof(t_env *));
+	(*data)->cmd = NULL;
+	(*data)->cmd_count = 0;
+	(*data)->err = 0;
+}
+
+t_env	**init_env()
+{
+	t_env	**tmp;
+
+	tmp = (t_env **)malloc(sizeof(t_env *));
+	if (!tmp)
 	{
-		if (count_str(args) > 2)
-		{
-			printf("minishell: cd: ");
-			ft_putendl_fd(strerror(E2BIG), 2);
-			return (2);
-		}
-		if (chdir(args[1]))
-		{
-			printf("minishell: cd: ");
-			ft_putendl_fd(strerror(errno), 2);
-			return (1);
-		}
+		exit(1);
 	}
-	return (0);
+	return (tmp);
 }

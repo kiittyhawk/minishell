@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/11 16:34:42 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/17 16:29:26 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
-// # include <readline/readline.h>
-// # include <readline/history.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 typedef struct s_env
 {
@@ -35,10 +38,23 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_redir
+{
+	char			*cmd;
+	char			*filename;
+	int				cmd_count;
+	int				type;
+	int				in;
+	int				out;
+	struct s_redit	*next;
+}	t_redir;
+
 typedef struct s_cmds
 {
-	char			**cmd;
+	char			*cmd;
+	char			**args;
 	int				flag;
+	t_redir			*redirect;
 	struct s_cmds	*next;
 }	t_cmds;
 
@@ -48,6 +64,7 @@ typedef struct s_all
 	t_cmds	*cmd;
 	int		cmd_count;
 	int		err;
+	char	**envp;
 }	t_all;
 
 /*check_syntax*/
@@ -65,17 +82,16 @@ char	*check_quot(char *line);
 int		check_syntax(char *line, t_all *data);
 int		parser(char *line, t_all *data);
 
-/*parse_env*/
+/*env_parser*/
 void	add_env(char *env, t_env **envp);
 void	parse_env(char **env, t_all *data);
-void	print_env(t_env **data, char *flag);
-void	increment(t_env *envp);
-void	shlvl_increment(t_env *envp);
-
-/*init_list*/
-t_env	**init_env();
 t_env	*init_elem(char *key, char *sep, char *val);
+// void	print_env(t_env **data, char *flag);
 void	add_elem(t_env **head, t_env *elem);
+
+/*init_struct*/
+t_env	**init_env();
+void	init_struct(t_all **data);
 
 /*line_handler*/
 char	*replace_env(char *line, int start, char *key, char *value);
@@ -92,6 +108,7 @@ void	env_buildin(t_env **envp);
 int		pwd_buildin(void);
 void	export_buildin(t_all *data, char *arg);
 int		unset(t_all *data, char *arg);
+int		cd_buildin(char **args);
 
 /*sort_env*/
 char	*find_next(char **keys, t_env **env, int i);
@@ -100,5 +117,28 @@ char	*find_first(t_env **env);
 void	export_output(char **keys, t_env **env);
 int		is_more(char *str1, char *str2);
 char	**set_array(t_env **env, int *count);
+
+/*redirect_parse*/
+char	*parse_redir(char *line, int *i, t_all *data);
+t_redir	*add_redir(char *line, int *i, t_all *data);
+char	*set_cmd(char *line, int i, t_all *data);
+
+/*shlvl*/
+void	increment(t_env *envp);
+void	shlvl_increment(t_env *envp);
+
+/*executor*/
+void	executor(t_all *data);
+void	set_flag(t_cmds *cmd);
+
+/*envp_array*/
+char	**create_array_envp(char **envp);
+int		count_str(char **envp);
+
+/*parse_cmd*/
+char	**cmd_split(char **array, t_cmds *cmd);
+char	**check_redir(char **array);
+int		count_elems(char **args);
+int		is_redirect(char ch);
 
 #endif
