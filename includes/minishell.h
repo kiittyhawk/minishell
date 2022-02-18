@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/17 16:29:26 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/18 17:31:45 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ void	init_struct(t_all **data);
 /*line_handler*/
 char	*replace_env(char *line, int start, char *key, char *value);
 char	*get_env(char *line, t_env *env, int *i);
-char	*quotes_handler(char *line, int *i);
-char	*remove_double_quotes(char *line, int *i);
+void	quotes_handler(char *line, int *i);
+void	remove_double_quotes(char *line, int *i);
 char	*double_quotes_handler(char *line, int *i, t_all *data);
 
 /*err_handler*/
@@ -106,9 +106,11 @@ char	*return_err(char *line, int *i, t_all *data);
 /*buildins*/
 void	env_buildin(t_env **envp);
 int		pwd_buildin(void);
-void	export_buildin(t_all *data, char *arg);
-int		unset(t_all *data, char *arg);
+void	export_buildin(t_all *data, char **args);
+int		unset(t_all *data, char **args);
 int		cd_buildin(char **args);
+void	echo_buildin(char **args);
+void	ft_putstr(char *str);
 
 /*sort_env*/
 char	*find_next(char **keys, t_env **env, int i);
@@ -140,5 +142,9 @@ char	**cmd_split(char **array, t_cmds *cmd);
 char	**check_redir(char **array);
 int		count_elems(char **args);
 int		is_redirect(char ch);
+
+/*split_with_quotes*/
+char	**split_with_quotes(char const *s, char c);
+
 
 #endif

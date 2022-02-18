@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 18:27:57 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/10 17:16:58 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/18 17:01:26 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	export_output(char **keys, t_env **env)
 {
 	t_env	*tmp;
 	int		i;
+	char	*str;
 
 	tmp = *env;
 	i = 0;
@@ -61,7 +62,22 @@ void	export_output(char **keys, t_env **env)
 		{
 			if (!is_more(keys[i], tmp->key))
 			{
-				printf("declare -x %s%s\"%s\"\n", tmp->key, tmp->sep, tmp->value);
+				str = ft_strdup(tmp->key);
+				if (tmp->sep)
+				{
+					str = ft_strjoin(str, tmp->sep);
+					if (tmp->value)
+					{
+						str = ft_strjoin(str, "\"");
+						str = ft_strjoin(str, tmp->value);
+						str = ft_strjoin(str, "\"");
+					}
+					else
+					{
+						str = ft_strjoin(str, "\"\"");
+					}
+				}
+				printf("declare -x %s\n", str);
 				i++;
 			}
 			tmp = tmp->next;
@@ -72,7 +88,22 @@ void	export_output(char **keys, t_env **env)
 	{
 		if (keys[i] && !is_more(keys[i], tmp->key))
 		{
-			printf("declare -x %s%s\"%s\"\n", tmp->key, tmp->sep, tmp->value);
+			str = ft_strdup(tmp->key);
+			if (tmp->sep)
+			{
+				str = ft_strjoin(str, tmp->sep);
+				if (tmp->value)
+				{
+					str = ft_strjoin(str, "\"");
+					str = ft_strjoin(str, tmp->value);
+					str = ft_strjoin(str, "\"");
+				}
+				else
+				{
+					str = ft_strjoin(str, "\"\"");
+				}
+			}
+			printf("declare -x %s\n", str);
 			break ;
 		}
 		tmp = tmp->next;

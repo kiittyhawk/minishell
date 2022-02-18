@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 16:35:54 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/17 16:58:50 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/18 17:11:02 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	set_flag(t_cmds *cmd)
 
 int	is_buildin(t_cmds *cmd)
 {
-	if (cmd->flag > 0 && cmd->flag < 8)
+	if (cmd->flag > 0)
 		return (1);
 	if (cmd->flag == 0)
 		return (0);
@@ -49,15 +49,15 @@ int	is_buildin(t_cmds *cmd)
 void	determinant_flag(t_all *data, t_cmds *cmd)
 {
 	if (cmd->flag == 1)
-		return ;
+		echo_buildin(cmd->args);
 	if (cmd->flag == 2)
 		cd_buildin(cmd->args);
 	if (cmd->flag == 3)
 		pwd_buildin();
 	if (cmd->flag == 4)
-		export_buildin(data, cmd->args[0]);
+		export_buildin(data, cmd->args);
 	if (cmd->flag == 5)
-		unset(data, cmd->args[0]);
+		unset(data, cmd->args);
 	if (cmd->flag == 6)
 		env_buildin(data->env);
 	if (cmd->flag == 7)

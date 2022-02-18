@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 19:27:55 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/07 15:59:06 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/18 16:19:47 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,82 +70,79 @@ char	*get_env(char *line, t_env *env, int *i)
 	return (line);
 }
 
-char	*quotes_handler(char *line, int *i)
+void	quotes_handler(char *line, int *i)
 {
-	int		start;
-	int		j;
-	char	*new_line;
+	// int		start;
+	// int		j;
+	// char	*new_line;
 
-	start = *i; // quote's index
-	j = 0;
-	new_line = malloc(ft_strlen(line) - 1);
+	// start = *i;
+	// j = start;
+	// new_line = malloc(ft_strlen(line) - 1);
 	(*i)++;
-	while (j < start)
-	{
-		new_line[j] = line[j];
-		j++;
-	}
+	// while (j < start)
+	// {
+		// new_line[j] = line[j];
+		// j++;/
+	// }
 	while (line[*i] != '\'')
 	{
-		new_line[j] = line[*i];
+		// new_line[j] = line[*i];
 		(*i)++;
-		j++;
+		// j++;
 	}
-	start = j;
-	(*i)++;
-	while (line[*i])
-	{
-		new_line[j] = line[*i];
-		(*i)++;
-		j++;
-	}
-	new_line[j] = '\0';
-	*i = start - 1;
-	return (new_line);
-}
-
-char	*remove_double_quotes(char *line, int *i)
-{
-	int		start;
-	int		j;
-	char	*new_line;
-
-	start = *i; // quote's index
-	j = 0;
-	new_line = malloc(ft_strlen(line) - 1);
-	(*i)++;
-	// while (line[*i] && line[*i] != '\'')
+	// start = j;
+	// (*i)++;
+	// while (line[*i])
+	// {
+		// new_line[j] = line[*i];
 	// 	(*i)++;
-	while (j < start)
-	{
-		// if (line[j] == '\'')
-		new_line[j] = line[j];
-		j++;
-	}
-	while (line[*i] != '"')
-	{
-		new_line[j] = line[*i];
-		(*i)++;
-		j++;
-	}
-	start = *i;
-	(*i)++;
-	while (line[*i])
-	{
-		new_line[j] = line[*i];
-		(*i)++;
-		j++;
-	}
-	new_line[j] = '\0';
-	*i = start - 1;
-	return (new_line);
+	// 	j++;
+	// }
+	// new_line[j] = '\0';
+	// *i = start - 1;
+	// return (new_line);
 }
+
+// void	remove_double_quotes(char *line, int *i)
+// {
+// 	int		start;
+// 	int		j;
+// 	// char	*new_line;
+
+// 	start = *i;
+// 	j = 0;
+// 	// new_line = malloc(ft_strlen(line) - 1);
+// 	(*i)++;
+// 	while (j < start)
+// 	{
+// 		// new_line[j] = line[j];
+// 		j++;
+// 	}
+// 	while (line[*i] != '"')
+// 	{
+// 		// new_line[j] = line[*i];
+// 		(*i)++;
+// 		j++;
+// 	}
+// 	start = *i;
+// 	// (*i)++;
+// 	// while (line[*i])
+// 	// {
+// 		// new_line[j] = line[*i];
+// 	// 	(*i)++;
+// 	// 	j++;
+// 	// }
+// 	// new_line[j] = '\0';
+// 	*i = start - 1;
+// 	// return (new_line);
+// }
 
 char	*double_quotes_handler(char *line, int *i, t_all *data)
 {
-	int	start;
+	// int	start;
 
-	start = *i;
+	// start = *i;
 	(*i)++;
 	while (line[*i] && line[*i] != '"')
 	{
@@ -159,7 +156,7 @@ char	*double_quotes_handler(char *line, int *i, t_all *data)
 		}
 		(*i)++;
 	}
-	*i = start;
-	line = remove_double_quotes(line, i);
+	// *i = start;
+	// remove_double_quotes(line, i);
 	return (line);
 }

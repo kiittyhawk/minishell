@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:44:19 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/17 16:22:53 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/18 13:32:02 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,6 @@ char	**cmd_split(char **array, t_cmds *cmd)
 		i++;
 	}
 	args[i] = NULL;
-	free(array);
-	i = -1;
-	while (array[++i])
-		free(array[i]);
 	if (args[0] == NULL)
 		return (NULL);
 	return (args);

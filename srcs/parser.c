@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 23:30:41 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/17 15:44:38 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/18 13:55:36 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*line_handler(char *line, t_all *data, int *i)
 		while (line[*i] && line[*i] == ' ')
 			(*i)++;
 		if (line[*i] == '\'')
-			line = quotes_handler(line, i);
+			quotes_handler(line, i);
 		if (line[*i] == '"')
 			line = double_quotes_handler(line, i, data);
 		if (line[*i] == '$' && (line[*i + 1] == '_' || ft_isalpha(line[*i + 1])))
@@ -86,7 +86,7 @@ char	*parse_line(char *line, t_all *data, t_cmds *cmd)
 		new_cmd = ft_substr(line, start, i - 1);
 	else
 		new_cmd = ft_substr(line, start, i);
-	cmd->args = cmd_split(ft_split(new_cmd, ' '), cmd);
+	cmd->args = cmd_split(split_with_quotes(new_cmd, ' '), cmd);
 	free(new_cmd);
 	j = i;
 	while (line[j])
