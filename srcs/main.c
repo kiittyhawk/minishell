@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/18 16:48:25 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/21 17:35:09 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,6 @@ int	main(int ac, char **av, char **env)
 		exit(0);
 	parse_env(env, data);
 	shlvl_increment(*data->env);
-	// parser("sort -n f f<4.txt>3.txt | echo \"privet mir\"", data);
-	// while (data->cmd)
-	// {
-	// 	printf("cmd = %s\nargs =", data->cmd->cmd);
-	// 	int i = -1;
-	// 	while (data->cmd->args && data->cmd->args[++i])
-	// 		printf(" %s|", data->cmd->args[i]);
-	// 	data->cmd = data->cmd->next;
-	// }
-	// parser("export", data);
-	// export_buildin(data, NULL);
-	// echo_buildin(array);
 	while (1)
 	{
 		signal(SIGINT, &sig_handler);
@@ -71,6 +59,11 @@ int	main(int ac, char **av, char **env)
 		if (parser(buf, data) == 0)
 		{
 			executor(data);
+			// while (data->cmd->redirect)
+			// {
+			// 	printf("%s\n", data->cmd->redirect->filename);
+			// 	data->cmd->redirect = data->cmd->redirect->next;
+			// }
 		}
 	}
 }

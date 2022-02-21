@@ -6,12 +6,13 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 23:30:41 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/18 13:55:36 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/21 17:07:46 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/*проверка на ошибке в синтаксисе*/
 int	check_syntax(char *line, t_all *data)
 {
 	if (search_err(line))
@@ -35,12 +36,14 @@ t_cmds	*new_cmd(void)
 
 	node = malloc(sizeof(t_cmds));
 	node->cmd = NULL;
+	node->redirect = NULL;
 	node->flag = 0;
 	node->args = NULL;
 	node->next = NULL;
 	return (node);
 }
 
+/*экранирование*/
 char	*line_handler(char *line, t_all *data, int *i)
 {
 	while (line[*i] && line[*i] != '|')
@@ -55,8 +58,8 @@ char	*line_handler(char *line, t_all *data, int *i)
 			line = get_env(line, *data->env, i);
 		if (line[*i] == '$' && line[*i + 1] == '?')
 			line = return_err(line, i, data);
-		// if (line[*i] == '>' || line[*i] == '<')
-		// 	parse_redir(line, i, data);
+		if (line[*i] == '>' || line[*i] == '<')
+			parse_redir(line, i, data);
 		if (line[*i] == '|')
 			data->cmd_count++;
 		else
@@ -65,6 +68,7 @@ char	*line_handler(char *line, t_all *data, int *i)
 	return (line);
 }
 
+/*парсит на строки до пайпа, потом отправляет все в списки*/
 char	*parse_line(char *line, t_all *data, t_cmds *cmd)
 {
 	int		i;

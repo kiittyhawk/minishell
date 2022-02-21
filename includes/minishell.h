@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/18 17:31:45 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/21 17:34:55 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ typedef struct s_env
 
 typedef struct s_redir
 {
-	char			*cmd;
+	// char			*cmd;
 	char			*filename;
 	int				cmd_count;
 	int				type;
 	int				in;
 	int				out;
-	struct s_redit	*next;
+	struct s_redir	*next;
 }	t_redir;
 
 typedef struct s_cmds
@@ -123,7 +123,7 @@ char	**set_array(t_env **env, int *count);
 /*redirect_parse*/
 char	*parse_redir(char *line, int *i, t_all *data);
 t_redir	*add_redir(char *line, int *i, t_all *data);
-char	*set_cmd(char *line, int i, t_all *data);
+char	*set_cmd(char *line, int i);
 
 /*shlvl*/
 void	increment(t_env *envp);

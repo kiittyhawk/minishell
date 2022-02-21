@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 16:35:54 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/18 17:11:02 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/21 18:19:39 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,38 @@ void	determinant_flag(t_all *data, t_cmds *cmd)
 		return ;
 }
 
+void	do_redirect(t_redir *redir)
+{
+	if (redir->type == 1 && redir->out)
+	{
+		int fd = open(redir->filename, O_WRONLY|O_CREAT|O_TRUNC, 0664);
+		dup2(fd, 1);
+	}
+	if (redir->type == 2 && redir->out)
+	{
+		int fd = open(redir->filename, O_WRONLY|O_CREAT|O_APPEND, 0664);
+		dup2(fd, 1);
+	}
+}
+
 void	executor(t_all *data)
 {
 	t_cmds	*cmd;
+	pid_t	 pid;
 
 	cmd = data->cmd;
-	pid_t pid;
-
 	set_flag(cmd);
 	if (cmd)
 	{
 		pid = fork();
 		if (pid == 0 && is_buildin(cmd))
 		{
+			// do_redirect(cmd->redirect);
 			determinant_flag(data, cmd);
 		}
-		if (pid == 0 && !is_buildin(cmd))
+		else if (pid == 0 && !is_buildin(cmd))
 		{
+			// do_redirect(data->cmd->redirect);
 			if (execve(cmd->cmd, cmd->args, data->envp) == -1)
 				perror("minishell");
 			exit(EXIT_FAILURE);

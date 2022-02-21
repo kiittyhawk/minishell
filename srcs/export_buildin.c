@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 13:04:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/18 16:48:07 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/21 15:47:03 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,41 +46,56 @@ static void	sorting(t_env **env, int marker)
 	free(keys);
 }
 
-char	*skip_empty(char *line)
+int	count_sym(char *str)
 {
-	int		i;
-	int		j;
-	char	*str;
+	int	i;
+	int	count;
 
 	i = 0;
-	j = 0;
-	str = ft_strdup(line);
-	while (line[i])
+	count = 0;
+	while (str[i])
 	{
-		while (line[i] && line[i] == ' ')
+		while (str[i] && str[i] == ' ')
 			i++;
-		str[j] = line[i];
-		j++;
+		count++;
 		i++;
 	}
-	str[j] = '\0';
-	return (str);
+	return (count);
+}
+
+int	skip_empty(char *line)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	while (line[i] && line[i] != '=')
+	{
+		if (line[i] && line[i] == ' ')
+			flag = 1;
+		i++;
+	}
+	return (flag);
 }
 
 void	export_buildin(t_all *data, char **args)
 {
-	int		i;
+	int	i;
 
-	i = -1;
+	i = 0;
 	if (args == NULL)
 		sorting(data->env, 1);
 	else
 	{
-		while (args[++i])
+		while (args[i])
 		{
-			args[i] = skip_empty(args[i]);
+			// printf("%s\n", args[i]);
+			if (skip_empty(args[i]))
+				return ;
 			add_env(args[i], data->env);
 			sorting(data->env, 0);
+			i++;
 		}
 	}
 }

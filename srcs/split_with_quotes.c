@@ -6,12 +6,13 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 13:56:52 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/18 16:34:33 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/21 13:29:56 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+/*считает кол-во будущих элементов массива*/
 static size_t	ft_count_words(char const *s, char c)
 {
 	size_t	len;
@@ -54,6 +55,7 @@ static char	**ft_clean(char **array)
 	return (NULL);
 }
 
+/*считает длину элемента*/
 static size_t	ft_words_len(char const *s, char c)
 {
 	size_t	i;
@@ -79,41 +81,34 @@ static size_t	ft_words_len(char const *s, char c)
 	return (i);
 }
 
+/*удаляет кавычки из строки*/
 char *is_quotes(const char *s)
 {
 	int			i;
 	int			j;
 	char		*str;
-	// char const	*tmp;
 
 	i = 0;
-	// s++;
 	j = 1;
-	// tmp = s;
 	while (s[j] && s[j] != '\'' && s[j] != '"')
 	{
 		i++;
 		j++;
-		// s++;
 	}
 	str = malloc((i + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
 	j = 1;
-	// s = tmp;
 	while (s[j] && s[j] != '\'' && s[j] != '"')
 	{
 		str[j - 1] = s[j];
-		// printf("%c = %c\n", str[j - 1], s[j]);
-		// str++;
 		j++;
-		// s++;
 	}
 	str[j] = '\0';
-	// free(tmp);
 	return (str);
 }
 
+/*парсит строку на будущие аргументы для команд, включая аргументы в кавычках*/
 char	**split_with_quotes(char const *s, char c)
 {
 	char		**array;
@@ -142,5 +137,6 @@ char	**split_with_quotes(char const *s, char c)
 		s = s + ft_words_len(s, c);
 		i++;
 	}
+	array[i] = '\0';
 	return (array);
 }
