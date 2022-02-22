@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/21 17:34:55 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/22 13:11:02 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_redir
 	char			*filename;
 	int				cmd_count;
 	int				type;
-	int				in;
+	// int				in;
 	int				out;
 	struct s_redir	*next;
 }	t_redir;
@@ -65,6 +65,7 @@ typedef struct s_all
 	int		cmd_count;
 	int		err;
 	char	**envp;
+	int		**fd;
 }	t_all;
 
 /*check_syntax*/
@@ -146,5 +147,9 @@ int		is_redirect(char ch);
 /*split_with_quotes*/
 char	**split_with_quotes(char const *s, char c);
 
+/*check_fd*/
+int	check_fd(t_all *data);
+int	checker(t_cmds *cmd, t_all *data);
+int	is_wrong_redir(t_redir *redir, t_env *env);
 
 #endif

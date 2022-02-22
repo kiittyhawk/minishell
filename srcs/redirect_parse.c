@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:58:27 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/21 17:34:09 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/22 11:35:10 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,39 +44,46 @@ char	*set_filename(char *line, int *i)
 	return (ft_substr(line, j, *i - j));
 }
 
-t_redir	*add_redir(char *line, int *i, t_all *data)
+t_redir	*init_redir(void)
 {
 	t_redir	*node;
 
 	node = malloc(sizeof(t_redir));
-	node->cmd_count = data->cmd_count;
 	node->next = NULL;
+	node->type = 0;
+	node->out = 0;
+	// node->in = 0;
+	return (node);
+}
+
+t_redir	*add_redir(char *line, int *i, t_all *data)
+{
+	t_redir	*node;
+
+	node = init_redir();
+	node->cmd_count = data->cmd_count;
 	if (line[*i + 1] && line[*i + 1] == '>' && line[*i] == '>')
 	{
 		node->type = 2;
 		node->out = 1;
-		node->in = 0;
 		*i += 2;
 	}
 	if (line[*i + 1] && line[*i + 1] != '>' && line[*i] == '>')
 	{
 		node->type = 1;
 		node->out = 1;
-		node->in = 0;
 		(*i)++;
 	}
 	if (line[*i + 1] && line[*i + 1] == '<' && line[*i] == '<')
 	{
 		node->type = 2;
-		node->out = 0;
-		node->in = 1;
+		// node->in = 1;
 		*i += 2;
 	}
 	if (line[*i + 1] && line[*i + 1] != '<' && line[*i] == '<')
 	{
 		node->type = 1;
-		node->out = 0;
-		node->in = 1;
+		// node->in = 1;
 		(*i)++;
 	}
 	// node->cmd = set_cmd(line, *i);

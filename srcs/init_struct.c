@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 17:16:28 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/17 13:56:56 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/22 13:11:49 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	init_struct(t_all **data)
 	(*data)->cmd = NULL;
 	(*data)->cmd_count = 0;
 	(*data)->err = 0;
+	(*data)->fd = NULL;
 }
 
 t_env	**init_env()

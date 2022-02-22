@@ -6,7 +6,7 @@
 #    By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/20 22:28:49 by jgyles            #+#    #+#              #
-#    Updated: 2022/02/18 13:55:55 by jgyles           ###   ########.fr        #
+#    Updated: 2022/02/22 12:54:37 by jgyles           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRC		=	main.c parser.c wrong_redirect.c \
 			unset_buildin.c redirect_parse.c \
 			shlvl.c env_parser.c init_struct.c executor.c \
 			envp_array.c parse_cmd.c cd_buidin.c echo_buildin.c \
-			split_with_quotes.c
+			split_with_quotes.c check_fd.c
 
 SRC		:=	$(addprefix $(SRCDIR)/, $(SRC))
 OBJ		=	$(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(SRC:.c=.o))
