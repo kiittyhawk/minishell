@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 19:27:55 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/18 16:19:47 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/24 15:44:23 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ char	*replace_env(char *line, int start, char *key, char *value)
 
 	i = 0;
 	j = 0;
-	res_len = ft_strlen(line) - ft_strlen(key) + ft_strlen(value);
+	if (value)
+		res_len = ft_strlen(line) - ft_strlen(key) + ft_strlen(value);
+	else
+		res_len = ft_strlen(line) - ft_strlen(key);
 	result = malloc(sizeof(char) * res_len);
 	while (i < start)
 	{
@@ -30,7 +33,7 @@ char	*replace_env(char *line, int start, char *key, char *value)
 		i++;
 	}
 	k = i + ft_strlen(key) + 1;
-	while (value[j])
+	while (value && value[j])
 		result[i++] = value[j++];
 	while (line[k])
 		result[i++] = line[k++];
@@ -42,19 +45,14 @@ char	*get_env(char *line, t_env *env, int *i)
 {
 	char	*key;
 	char	*value;
-	int		len;
 	int		start;
 
 	start = *i;
 	(*i)++;
-	len = 0;
 	value = NULL;
 	while (line[*i] && (line[*i] == '_' || ft_isalpha(line[*i])))
-	{
-		len++;
 		(*i)++;
-	}
-	key = ft_substr(line, start + 1, len);
+	key = ft_substr(line, start + 1, *i - start - 1);
 	while (env)
 	{
 		if (ft_strcmp(env->key, key) == 0)
@@ -65,7 +63,10 @@ char	*get_env(char *line, t_env *env, int *i)
 		env = env->next;
 	}
 	line = replace_env(line, start, key, value);
-	*i = start - 2 + ft_strlen(value);
+	if (value)
+		*i = start - 2 + ft_strlen(value);
+	else
+		*i = start - 2 + ft_strlen(key);
 	free(key);
 	return (line);
 }

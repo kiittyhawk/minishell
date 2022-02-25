@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/21 17:35:09 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/25 16:29:59 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,40 @@ void	sig_handler(int sig)
 	}
 }
 
-int	main(int ac, char **av, char **env)
+int	is_empty(char *str)
 {
-	t_all	*data;
-	char	*buf;
-	(void)av;
+	int	i;
 
-	init_struct(&data);
-	data->envp = create_array_envp(env);
-	buf = NULL;
-	if (ac != 1)
-		exit(0);
-	parse_env(env, data);
-	shlvl_increment(*data->env);
+	i = -1;
+	while (str && str[++i])
+	{
+		if (str && str[i] != ' ')
+			return (0);
+	}
+	return (1);
+}
+
+void	free_array(char **array)
+{
+	int	i;
+
+	i = -1;
+	while (array && array[++i])
+		free(array[i]);
+	free(array);
+}
+
+void	minishell(char *buf, t_all *data)
+{
+	char	**cmds;
+	int		i;
+
+	cmds = NULL;
+	i = -1;
 	while (1)
 	{
-		signal(SIGINT, &sig_handler);
-		signal(SIGQUIT, &sig_handler);
+		// signal(SIGINT, &sig_handler);
+		// signal(SIGQUIT, &sig_handler);
 		rl_on_new_line();
 		if (buf)
 		{
@@ -56,14 +73,33 @@ int	main(int ac, char **av, char **env)
 		buf = readline("minishell>  ");
 		if (buf)
 			add_history(buf);
-		if (parser(buf, data) == 0)
+		if (ft_strchr(buf, ';'))
+			cmds = ft_split(buf, ';');
+		if (is_empty(buf))
+			continue ;
+		else if (cmds)
 		{
-			executor(data);
-			// while (data->cmd->redirect)
-			// {
-			// 	printf("%s\n", data->cmd->redirect->filename);
-			// 	data->cmd->redirect = data->cmd->redirect->next;
-			// }
+			while (cmds[++i] && parser(cmds[i], data) == 0)
+				executor(data);
 		}
+		else if (parser(buf, data) == 0)
+			executor(data);
+		free_array(cmds);
 	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+	t_all	*data;
+	char	*buf;
+	(void)av;
+
+	init_struct(&data);
+	buf = NULL;
+	if (ac != 1)
+		exit(0);
+	data->envp = create_array_envp(env);
+	parse_env(env, data);
+	shlvl_increment(*data->env);
+	minishell(buf, data);
 }

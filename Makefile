@@ -6,7 +6,7 @@
 #    By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/20 22:28:49 by jgyles            #+#    #+#              #
-#    Updated: 2022/02/22 12:54:37 by jgyles           ###   ########.fr        #
+#    Updated: 2022/02/25 13:49:02 by jgyles           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,12 +20,12 @@ NAME	=	minishell
 LIB		=	./Libft/libft.a
 SRC		=	main.c parser.c wrong_redirect.c \
 			check_syntax.c line_handler.c \
-			err_handler.c env_buildin.c export_buildin.c \
-			pwd_buildin.c sort_env.c sort_env_finders.c \
-			unset_buildin.c redirect_parse.c \
+			err_handler.c env_builtin.c export_builtin.c \
+			pwd_builtin.c sort_env.c sort_env_finders.c \
+			unset_builtin.c redirect_parse.c \
 			shlvl.c env_parser.c init_struct.c executor.c \
-			envp_array.c parse_cmd.c cd_buidin.c echo_buildin.c \
-			split_with_quotes.c check_fd.c
+			envp_array.c parse_cmd.c cd_buitin.c echo_builtin.c \
+			split_with_quotes.c check_fd.c redir_handler.c
 
 SRC		:=	$(addprefix $(SRCDIR)/, $(SRC))
 OBJ		=	$(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(SRC:.c=.o))

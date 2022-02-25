@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 12:53:12 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/22 12:55:26 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/22 15:27:22 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	check_fd(t_all *data)
 	cmd = data->cmd;
 	while (cmd)
 	{
-		if (cmd->redirect->out || !(cmd->redirect->type == 2))
+		if (cmd->redirect && (cmd->redirect->out || !(cmd->redirect->type == 2)))
 		{
 			if (checker(cmd, data))
 				return (1);

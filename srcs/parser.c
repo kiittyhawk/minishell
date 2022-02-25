@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 23:30:41 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/21 17:07:46 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/25 14:18:25 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	parser(char *line, t_all *data)
 {
 	t_cmds	*tmp;
 
-	if (!line)
+	if (!line && !(*line))
 		return (1);
 	if (check_syntax(line, data))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 13:56:52 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/21 13:29:56 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/24 18:58:11 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ char *is_quotes(const char *s)
 	return (str);
 }
 
-/*парсит строку на будущие аргументы для команд, включая аргументы в кавычках*/
+/*парсит строку на аргументы для команд, включая аргументы в кавычках*/
 char	**split_with_quotes(char const *s, char c)
 {
 	char		**array;
@@ -137,6 +137,6 @@ char	**split_with_quotes(char const *s, char c)
 		s = s + ft_words_len(s, c);
 		i++;
 	}
-	array[i] = '\0';
+	array[i] = NULL;
 	return (array);
 }

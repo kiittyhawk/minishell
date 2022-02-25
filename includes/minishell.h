@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/22 13:11:02 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/25 16:13:40 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,11 @@ typedef struct s_env
 
 typedef struct s_redir
 {
-	// char			*cmd;
 	char			*filename;
 	int				cmd_count;
 	int				type;
-	// int				in;
 	int				out;
+	int				last;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -63,6 +62,7 @@ typedef struct s_all
 	t_env	**env;
 	t_cmds	*cmd;
 	int		cmd_count;
+	int		out;
 	int		err;
 	char	**envp;
 	int		**fd;
@@ -105,7 +105,7 @@ char	*double_quotes_handler(char *line, int *i, t_all *data);
 char	*return_err(char *line, int *i, t_all *data);
 
 /*buildins*/
-void	env_buildin(t_env **envp);
+void	env_buildin(t_env **envp, char **args);
 int		pwd_buildin(void);
 void	export_buildin(t_all *data, char **args);
 int		unset(t_all *data, char **args);
@@ -148,8 +148,16 @@ int		is_redirect(char ch);
 char	**split_with_quotes(char const *s, char c);
 
 /*check_fd*/
-int	check_fd(t_all *data);
-int	checker(t_cmds *cmd, t_all *data);
-int	is_wrong_redir(t_redir *redir, t_env *env);
+int		check_fd(t_all *data);
+int		checker(t_cmds *cmd, t_all *data);
+int		is_wrong_redir(t_redir *redir, t_env *env);
+
+/*redir_handler*/
+void	redup(int fd, t_all *data);
+int		dup_fd(t_cmds *cmd, t_all *data);
+int		swap_fd(int fd, t_all *data);
+int		swap_fd_in(int fd, t_all *data);
+void	redup_in(int fd);
+void	free_array(char **array);
 
 #endif

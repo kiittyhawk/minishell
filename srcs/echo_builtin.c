@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_buildin.c                                     :+:      :+:    :+:   */
+/*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 17:19:32 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/18 12:57:04 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/24 18:37:06 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ void	echo_buildin(char **args)
 
 	flag = 0;
 	i = 0;
-	if (args[0][0] == '-' && args[0][1] == 'n' && args[0][2] == '\0')
+	if (args && args[0][0] == '-' && args[0][1] == 'n' && args[0][2] == '\0')
 	{
 		flag = 1;
 		i++;
 	}
-	while (i < get_count(args))
+	while (args && i < get_count(args))
 	{
 		ft_putstr(args[i++]);
 		if (i < get_count(args))

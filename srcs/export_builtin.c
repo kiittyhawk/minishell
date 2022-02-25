@@ -1,26 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_buildin.c                                   :+:      :+:    :+:   */
+/*   export_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 13:04:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/21 15:47:03 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/25 16:06:32 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	free_array(char **array)
-{
-	int	i;
-
-	i = -1;
-	while (array[++i])
-		free(array[i]);
-	free(array);
-}
 
 static void	sorting(t_env **env, int marker)
 {
@@ -84,13 +74,12 @@ void	export_buildin(t_all *data, char **args)
 	int	i;
 
 	i = 0;
-	if (args == NULL)
+	if (args && args[i] == NULL)
 		sorting(data->env, 1);
 	else
 	{
 		while (args[i])
 		{
-			// printf("%s\n", args[i]);
 			if (skip_empty(args[i]))
 				return ;
 			add_env(args[i], data->env);

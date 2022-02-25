@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:58:27 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/22 11:35:10 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/25 15:10:15 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ t_redir	*init_redir(void)
 	node = malloc(sizeof(t_redir));
 	node->next = NULL;
 	node->type = 0;
+	node->type = 1;
 	node->out = 0;
-	// node->in = 0;
+	node->last = 1;
 	return (node);
 }
 
@@ -64,40 +65,58 @@ t_redir	*add_redir(char *line, int *i, t_all *data)
 	node->cmd_count = data->cmd_count;
 	if (line[*i + 1] && line[*i + 1] == '>' && line[*i] == '>')
 	{
-		node->type = 2;
+		node->type++;
 		node->out = 1;
 		*i += 2;
 	}
 	if (line[*i + 1] && line[*i + 1] != '>' && line[*i] == '>')
 	{
-		node->type = 1;
 		node->out = 1;
 		(*i)++;
 	}
 	if (line[*i + 1] && line[*i + 1] == '<' && line[*i] == '<')
 	{
-		node->type = 2;
-		// node->in = 1;
+		node->type++;
 		*i += 2;
 	}
 	if (line[*i + 1] && line[*i + 1] != '<' && line[*i] == '<')
-	{
-		node->type = 1;
-		// node->in = 1;
 		(*i)++;
-	}
-	// node->cmd = set_cmd(line, *i);
 	node->filename = set_filename(line, i);
 	return (node);
+}
+
+int	set_last(t_redir *redir, t_redir *redirs)
+{
+	if (redir->out)
+	{
+		while (redirs && redirs != redir)
+		{
+			if (redirs->out && redirs->last == 1)
+				redirs->last = 0;
+			redirs = redirs->next;
+		}
+	}
+	else
+	{
+		while (redirs && redirs != redir)
+		{
+			if (!redirs->out && redirs->last == 1)
+				redirs->last = 0;
+			redirs = redirs->next;
+		}
+	}
+	return (1);
 }
 
 char	*parse_redir(char *line, int *i, t_all *data)
 {
 	t_cmds	*cmd;
 	t_redir	*redir;
+	t_redir	*redirs;
 
 	cmd = data->cmd;
 	redir = cmd->redirect;
+	redirs = cmd->redirect;
 	if (!cmd->redirect)
 	{
 		cmd->redirect = add_redir(line, i, data);
@@ -107,6 +126,7 @@ char	*parse_redir(char *line, int *i, t_all *data)
 		while (cmd->redirect->next)
 			cmd->redirect = cmd->redirect->next;
 		cmd->redirect->next = add_redir(line, i, data);
+		cmd->redirect->next->last = set_last(cmd->redirect->next, redirs);
 		cmd->redirect = redir;
 	}
 	return (line);

@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 16:35:54 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/22 13:20:34 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/25 16:13:56 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,37 @@ void	determinant_flag(t_all *data, t_cmds *cmd)
 	if (cmd->flag == 5)
 		unset(data, cmd->args);
 	if (cmd->flag == 6)
-		env_buildin(data->env);
+		env_buildin(data->env, cmd->args);
 	if (cmd->flag == 7)
 		return ;
 }
 
-void	do_redirect(t_redir *redir)
-{
-	int	fd;
+// void	do_redirect(t_redir *redir)
+// {
+// 	int	fd;
 
-	if (redir->type == 1 && redir->out)
-	{
-		fd = open(redir->filename, O_WRONLY|O_CREAT|O_TRUNC, 0664);
-		dup2(fd, 1);
-	}
-	if (redir->type == 2 && redir->out)
-	{
-		fd = open(redir->filename, O_WRONLY|O_CREAT|O_APPEND, 0664);
-		dup2(fd, 1);
-	}
-}
+// 	fd = 0;
+// 	if (redir->type == 1 && redir->out)
+// 	{
+// 		fd = open(redir->filename, O_WRONLY|O_CREAT|O_TRUNC, 0664);
+// 		if (dup2(fd, STDOUT_FILENO) == -1)
+// 		{
+// 			close(fd);
+// 			return ; // обработать ошибку
+// 		}
+// 	}
+// 	else if (redir->type == 2 && redir->out)
+// 	{
+// 		fd = open(redir->filename, O_WRONLY|O_CREAT|O_APPEND, 0664);
+// 		if (dup2(fd, STDOUT_FILENO) == -1)
+// 		{
+// 			close(fd);
+// 			return ; // обработать ошибку
+// 		}
+// 	}
+// 	// dup2(STDOUT_FILENO, fd);
+// 	close(fd);
+// }
 
 void	ft_pipe(t_all *data)
 {
@@ -87,12 +98,12 @@ void	ft_pipe(t_all *data)
 	i = 0;
 	data->fd = malloc((data->cmd_count - 1) * sizeof(int *));
 	if (!data->fd)
-		return (1);
+		return ;
 	while (i < data->cmd_count - 1)
 	{
 		data->fd[i] = malloc(2 * sizeof(int));
 		if (!data->fd)
-			return (1);
+			return ;
 		if (pipe(data->fd[i]) == -1)
 		{
 			while (--i)
@@ -106,20 +117,45 @@ void	ft_pipe(t_all *data)
 	}
 }
 
+// void	run_builtin(t_all *data)
+// {
+// 	pid_t	pid;
+
+// 	pid = fork();
+// 	if (pid == 0)
+// 	else if (pid < 0)
+// 		return ; //error_handler
+// 	else
+// 		waitpid(pid, NULL, 0);
+// }
+
 void	executor(t_all *data)
 {
-	t_cmds	*cmd;
-	pid_t	 pid;
+	// t_cmds	*cmd;
+	// pid_t	 pid;
+	int		fd;
 
-	cmd = data->cmd;
-	set_flag(cmd);
+	// cmd = data->cmd;
+	set_flag(data->cmd);
+	fd = 0;
 	if (!check_fd(data))
 	{
 		if (data->cmd_count == 0)
 			return ;
 		if (data->cmd_count > 1)
 			ft_pipe(data);
-		/*впихуемое*/
+		if (data->cmd_count == 1 && data->cmd->flag)
+		{
+			fd = dup_fd(data->cmd, data);
+			determinant_flag(data, data->cmd);
+			redup(fd, data);
+		}
+		// int i = 0;
+		// while (data->fd[i])
+		// {
+		// 	printf("%d-%d\n", data->fd[i][0], data->fd[i][1]);
+		// 	i++;
+		// }
 		// while (cmd)
 		// {
 		// 	pid = fork();
@@ -131,14 +167,15 @@ void	executor(t_all *data)
 		// 	}
 		// 	else if (pid == 0 && !is_buildin(cmd))
 		// 	{
-		// 		// do_redirect(data->cmd->redirect);
+		// 		if (cmd->redirect)
+		// 			do_redirect(cmd->redirect);
 		// 		if (execve(cmd->cmd, cmd->args, data->envp) == -1)
-		// 			perror("minishell");
+		// 			perror("shell");
 		// 		exit(EXIT_FAILURE);
 		// 	}
 		// 	else if (pid < 0)
 		// 	{
-		// 		perror("minishell");
+		// 		perror("mini");
 		// 	}
 		// 	else
 		// 	{

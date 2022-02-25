@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:44:19 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/21 14:15:25 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/24 18:44:51 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	count_elems(char **args)
 
 	len = 0;
 	i = 0;
-	while (args[++i] && !is_redirect(args[i][0]))
+	while (args && args[++i] && !is_redirect(args[i][0]))
 		len++;
 	return (len);
 }
@@ -73,16 +73,19 @@ char	**cmd_split(char **array, t_cmds *cmd)
 	int		i;
 
 	i = 1;
-	args = malloc(sizeof(char *) * (count_elems(array) + 1));
-	array = check_redir(array);
-	cmd->cmd = array[0];
-	while (array[i] && !is_redirect(array[i][0]))
+	if (array)
 	{
-		args[i - 1] = ft_strdup(array[i]);
-		i++;
+		array = check_redir(array);
+		args = malloc(sizeof(char *) * (count_elems(array) + 1));
+		cmd->cmd = array[0];
+		while (array[i] && !is_redirect(array[i][0]))
+		{
+			args[i - 1] = ft_strdup(array[i]);
+			i++;
+		}
+		args[i] = NULL;
+		return (args);
 	}
-	args[i] = '\0';
-	if (args[0] == NULL)
+	else
 		return (NULL);
-	return (args);
 }
