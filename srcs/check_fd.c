@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 12:53:12 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/22 15:27:22 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/25 19:12:23 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	check_fd(t_all *data)
 			if (checker(cmd, data))
 				return (1);
 		}
+		// else
+		// 	heredoc();
 		cmd = cmd->next;
 	}
 	return (0);

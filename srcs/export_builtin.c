@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 13:04:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/25 16:06:32 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/26 11:48:14 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void	export_buildin(t_all *data, char **args)
 {
 	int	i;
 
-	i = 0;
-	if (args && args[i] == NULL)
+	i = 1;
+	if (args && args[1] == NULL)
 		sorting(data->env, 1);
 	else
 	{
-		while (args[i])
+		while (args && args[i])
 		{
 			if (skip_empty(args[i]))
 				return ;

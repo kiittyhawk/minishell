@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 23:30:41 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/25 14:18:25 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/28 14:25:58 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*line_handler(char *line, t_all *data, int *i)
 {
 	while (line[*i] && line[*i] != '|')
 	{
-		while (line[*i] && line[*i] == ' ')
+		while (line[*i] && (line[*i] == ' ' || line[*i] == '\t'))
 			(*i)++;
 		if (line[*i] == '\'')
 			quotes_handler(line, i);
@@ -59,7 +59,7 @@ char	*line_handler(char *line, t_all *data, int *i)
 		if (line[*i] == '$' && line[*i + 1] == '?')
 			line = return_err(line, i, data);
 		if (line[*i] == '>' || line[*i] == '<')
-			parse_redir(line, i, data);
+			line = parse_redir(line, i, data);
 		if (line[*i] == '|')
 			data->cmd_count++;
 		else

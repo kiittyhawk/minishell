@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/25 16:13:40 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/28 17:59:09 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_redir
 	int				type;
 	int				out;
 	int				last;
+	char			*limiter;
 	struct s_redir	*next;
 }	t_redir;
 
@@ -87,7 +88,6 @@ int		parser(char *line, t_all *data);
 void	add_env(char *env, t_env **envp);
 void	parse_env(char **env, t_all *data);
 t_env	*init_elem(char *key, char *sep, char *val);
-// void	print_env(t_env **data, char *flag);
 void	add_elem(t_env **head, t_env *elem);
 
 /*init_struct*/
@@ -124,7 +124,6 @@ char	**set_array(t_env **env, int *count);
 /*redirect_parse*/
 char	*parse_redir(char *line, int *i, t_all *data);
 t_redir	*add_redir(char *line, int *i, t_all *data);
-char	*set_cmd(char *line, int i);
 
 /*shlvl*/
 void	increment(t_env *envp);
@@ -159,5 +158,8 @@ int		swap_fd(int fd, t_all *data);
 int		swap_fd_in(int fd, t_all *data);
 void	redup_in(int fd);
 void	free_array(char **array);
+
+/*signal*/
+void	ft_handler_sigint(int sig);
 
 #endif

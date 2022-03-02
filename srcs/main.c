@@ -6,29 +6,11 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/25 16:29:59 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/28 17:44:36 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	sig_handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		printf("\n");
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	if (sig == SIGQUIT)
-	{
-		printf("\b\b");
-		printf("  ");
-		printf("\n");
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
 
 int	is_empty(char *str)
 {
@@ -62,7 +44,7 @@ void	minishell(char *buf, t_all *data)
 	i = -1;
 	while (1)
 	{
-		// signal(SIGINT, &sig_handler);
+		signal(SIGINT, &ft_handler_sigint);
 		// signal(SIGQUIT, &sig_handler);
 		rl_on_new_line();
 		if (buf)
@@ -71,6 +53,8 @@ void	minishell(char *buf, t_all *data)
 			buf = NULL;
 		}
 		buf = readline("minishell>  ");
+		if (!buf)
+			return ; //error
 		if (buf)
 			add_history(buf);
 		if (ft_strchr(buf, ';'))

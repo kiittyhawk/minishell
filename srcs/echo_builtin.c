@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 17:19:32 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/24 18:37:06 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/28 17:47:14 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ void	echo_buildin(char **args)
 	int	i;
 
 	flag = 0;
-	i = 0;
-	if (args && args[0][0] == '-' && args[0][1] == 'n' && args[0][2] == '\0')
+	i = 1;
+	if (args[1] && args[1][0] == '-' && args[1][1] == 'n' && args[1][2] == '\0')
 	{
 		flag = 1;
 		i++;
 	}
-	while (args && i < get_count(args))
+	while (args && args[i] && i < get_count(args))
 	{
 		ft_putstr(args[i++]);
 		if (i < get_count(args))

@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 16:35:54 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/25 16:13:56 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/02/26 11:58:49 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,33 +64,6 @@ void	determinant_flag(t_all *data, t_cmds *cmd)
 		return ;
 }
 
-// void	do_redirect(t_redir *redir)
-// {
-// 	int	fd;
-
-// 	fd = 0;
-// 	if (redir->type == 1 && redir->out)
-// 	{
-// 		fd = open(redir->filename, O_WRONLY|O_CREAT|O_TRUNC, 0664);
-// 		if (dup2(fd, STDOUT_FILENO) == -1)
-// 		{
-// 			close(fd);
-// 			return ; // обработать ошибку
-// 		}
-// 	}
-// 	else if (redir->type == 2 && redir->out)
-// 	{
-// 		fd = open(redir->filename, O_WRONLY|O_CREAT|O_APPEND, 0664);
-// 		if (dup2(fd, STDOUT_FILENO) == -1)
-// 		{
-// 			close(fd);
-// 			return ; // обработать ошибку
-// 		}
-// 	}
-// 	// dup2(STDOUT_FILENO, fd);
-// 	close(fd);
-// }
-
 void	ft_pipe(t_all *data)
 {
 	int	i;
@@ -117,18 +90,6 @@ void	ft_pipe(t_all *data)
 	}
 }
 
-// void	run_builtin(t_all *data)
-// {
-// 	pid_t	pid;
-
-// 	pid = fork();
-// 	if (pid == 0)
-// 	else if (pid < 0)
-// 		return ; //error_handler
-// 	else
-// 		waitpid(pid, NULL, 0);
-// }
-
 void	executor(t_all *data)
 {
 	// t_cmds	*cmd;
@@ -150,26 +111,20 @@ void	executor(t_all *data)
 			determinant_flag(data, data->cmd);
 			redup(fd, data);
 		}
-		// int i = 0;
-		// while (data->fd[i])
-		// {
-		// 	printf("%d-%d\n", data->fd[i][0], data->fd[i][1]);
-		// 	i++;
-		// }
 		// while (cmd)
 		// {
 		// 	pid = fork();
 		// 	if (pid == 0 && is_buildin(cmd))
 		// 	{
-		// 		if (cmd->redirect)
-		// 			do_redirect(cmd->redirect);
+		// 		// if (cmd->redirect)
+		// 		// 	do_redirect(cmd->redirect);
 		// 		determinant_flag(data, cmd);
 		// 	}
 		// 	else if (pid == 0 && !is_buildin(cmd))
 		// 	{
-		// 		if (cmd->redirect)
-		// 			do_redirect(cmd->redirect);
-		// 		if (execve(cmd->cmd, cmd->args, data->envp) == -1)
+		// 		// if (cmd->redirect)
+		// 			// do_redirect(cmd->redirect);
+		// 		if (execve(ft_strjoin("/bin/", cmd->cmd), cmd->args, data->envp) == -1)
 		// 			perror("shell");
 		// 		exit(EXIT_FAILURE);
 		// 	}

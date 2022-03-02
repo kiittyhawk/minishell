@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_builtin.c                                      :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/09 12:47:45 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/26 11:47:29 by jgyles           ###   ########.fr       */
+/*   Created: 2022/02/26 10:52:21 by jgyles            #+#    #+#             */
+/*   Updated: 2022/02/26 11:39:34 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	env_buildin(t_env **envp, char **args)
+void	ft_handler_sigint(int sig)
 {
-	t_env	*tmp;
-
-	tmp = *envp;
-	if (args && args[1] == NULL)
-		while (tmp)
-		{
-			printf("%s%s%s\n", tmp->key, tmp->sep, tmp->value);
-			tmp = tmp->next;
-		}
-	else if (args && args[0])
-	{
-		printf("env: \'%s\': No such file or directory\n", args[1]);
-	}
+	(void)sig;
+	ft_putendl_fd("", STDOUT_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	// rl_redisplay();
 }
+
