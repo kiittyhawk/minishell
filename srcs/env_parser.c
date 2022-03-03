@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 17:15:52 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/16 17:17:20 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/03 21:03:30 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,39 @@ void	add_elem(t_env **head, t_env *elem)
 		*head = elem;
 }
 
+int	key_is(char *key, t_env **envp)
+{
+	t_env	*tmp;
+
+	tmp = *envp;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->key, key))
+			return (1);
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+void	add_value(char *key, char *sep, char *value, t_env **envp)
+{
+	t_env	*tmp;
+
+	tmp = *envp;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->key, key))
+			break ;
+		tmp = tmp->next;
+	}
+	if (tmp->value)
+		free(tmp->value);
+	tmp->value = value;
+	if (tmp->sep)
+		free(tmp->sep);
+	tmp->sep = sep;
+}
+
 /*принимает строку и добавляет ее к структуре envp*/
 void	add_env(char *env, t_env **envp)
 {
@@ -66,7 +99,10 @@ void	add_env(char *env, t_env **envp)
 	{
 		val = ft_strdup(&env[i + 1]);
 	}
-	add_elem(envp, init_elem(key, sep, val));
+	if (!key_is(key, envp))
+		add_elem(envp, init_elem(key, sep, val));
+	else
+		add_value(key, sep, val, envp);
 }
 
 /*перебирает переменные окружения и передает их парсеру*/

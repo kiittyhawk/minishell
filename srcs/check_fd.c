@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 12:53:12 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/25 19:12:23 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/03 21:12:22 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,15 @@ int	check_fd(t_all *data)
 	t_cmds	*cmd;
 
 	cmd = data->cmd;
-	while (cmd)
+	while (cmd && cmd->redirect)
 	{
 		if (cmd->redirect && (cmd->redirect->out || !(cmd->redirect->type == 2)))
 		{
 			if (checker(cmd, data))
 				return (1);
 		}
-		// else
-		// 	heredoc();
+		else
+			heredoc(cmd->redirect->limiter);
 		cmd = cmd->next;
 	}
 	return (0);

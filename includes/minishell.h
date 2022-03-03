@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/28 17:59:09 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/02 21:37:55 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,8 @@ void	free_array(char **array);
 
 /*signal*/
 void	ft_handler_sigint(int sig);
+
+/*heredoc*/
+void	heredoc(char *limiter);
 
 #endif
