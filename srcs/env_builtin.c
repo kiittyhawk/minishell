@@ -6,13 +6,13 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 12:47:45 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/26 11:47:29 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/04 18:12:11 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	env_buildin(t_env **envp, char **args)
+int	env_buildin(t_env **envp, char **args)
 {
 	t_env	*tmp;
 
@@ -25,6 +25,10 @@ void	env_buildin(t_env **envp, char **args)
 		}
 	else if (args && args[0])
 	{
-		printf("env: \'%s\': No such file or directory\n", args[1]);
+		ft_putstr_fd("env: \'", STDERR_FILENO);
+		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putstr_fd("\': No such file or directory\n", STDERR_FILENO);
+		return (127);
 	}
+	return (0);
 }

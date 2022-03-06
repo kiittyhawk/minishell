@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 23:30:41 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/28 14:25:58 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 20:56:59 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,26 @@ int	check_syntax(char *line, t_all *data)
 {
 	if (search_err(line))
 	{
-		data->err = 127;
+		data->err = 2;
 		printf("minishell: unexpected EOF while looking for matching `%s\'\n", search_err(line));
 		return (1);
 	}
 	else if (check_quot(line))
 	{
-		data->err = 127;
+		data->err = 2;
 		printf("minishell: syntax error near unexpected token `%s'\n", check_quot(line));
 		return (1);
 	}
 	return (0);
 }
 
-t_cmds	*new_cmd(void)
+t_cmds	*new_cmd(t_all *data)
 {
 	t_cmds	*node;
 
 	node = malloc(sizeof(t_cmds));
+	if (!node)
+		malloc_err(errno, data);
 	node->cmd = NULL;
 	node->redirect = NULL;
 	node->flag = 0;
@@ -90,7 +92,7 @@ char	*parse_line(char *line, t_all *data, t_cmds *cmd)
 		new_cmd = ft_substr(line, start, i - 1);
 	else
 		new_cmd = ft_substr(line, start, i);
-	cmd->args = cmd_split(split_with_quotes(new_cmd, ' '), cmd);
+	cmd->args = cmd_split(split_with_quotes(new_cmd, ' '), cmd, data);
 	free(new_cmd);
 	j = i;
 	while (line[j])
@@ -107,13 +109,13 @@ int	parser(char *line, t_all *data)
 		return (1);
 	if (check_syntax(line, data))
 		return (1);
-	data->cmd = new_cmd();
+	data->cmd = new_cmd(data);
 	data->cmd_count = 1;
 	tmp = data->cmd;
 	line = parse_line(line, data, data->cmd);
 	while (line[0] && line[0] == '|')
 	{
-		data->cmd->next = new_cmd();
+		data->cmd->next = new_cmd(data);
 		data->cmd = data->cmd->next;
 		data->cmd_count++;
 		line = parse_line(line, data, data->cmd);

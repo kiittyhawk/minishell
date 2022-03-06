@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 17:50:42 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/03 15:39:59 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 17:11:05 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	wrong_semicolon(char *line)
 	while (line[i] && (line[i] == ' ' || line[i] == '\t'
 			|| line[i] == '\n'))
 		i++;
-	if (line[i] == ';' && line[i])
+	if (line[i] && line[i] == ';')
 		return (1);
 	return (0);
 }
@@ -75,7 +75,7 @@ int	unclose_quotes(char *line)
 		if (line[i] == '\'')
 		{
 			i++;
-			while (line[i] != '\'' && line[i])
+			while (line[i] && line[i] != '\'')
 				i++;
 			if (line[i] != '\'')
 				return (1);

@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 20:03:39 by jgyles            #+#    #+#             */
-/*   Updated: 2022/03/03 21:10:18 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 19:38:32 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,17 @@ void	loop_heredoc(char *limiter, int fd)
 
 	while (1)
 	{
-		if (write(1, "> ", 2) == -1)
-			return ;
+		ft_putstr_fd("> ", 1);
 		gnl(&line);
 		if (!line)
 		{
-			if (write(1, "  \b\b", 1) == -1)
-				return ;
+			ft_putstr_fd("  \b\b", 1);
 			break ;
 		}
 		if (ft_strcmp(line, limiter))
 		{
-			if (write(fd, line, ft_strlen(line)) == -1)
-				return ;
-			if (write(fd, "\n", 1) == -1)
-				return ;
+			ft_putstr_fd(line, fd);
+			ft_putstr_fd("\n", fd);
 		}
 		else
 			break ;
@@ -81,7 +77,7 @@ void	loop_heredoc(char *limiter, int fd)
 	}
 }
 
-void	heredoc(char *limiter)
+void	heredoc(char *limiter, t_all *data)
 {
 	int		fd;
 	pid_t	pid;
@@ -89,7 +85,8 @@ void	heredoc(char *limiter)
 	pid = fork();
 	if (pid == -1)
 	{
-		perror("heredoc");
+		data->err = errno;
+		ft_exit(data->err, "fork");
 	}
 	if (pid != 0)
 		signal(SIGINT, SIG_IGN);
@@ -97,7 +94,7 @@ void	heredoc(char *limiter)
 	{
 		fd = open("heredoc", O_RDWR | O_CREAT | O_TRUNC | O_APPEND, 0644);
 		if (fd == -1)
-			return ;
+			ft_exit(errno, "heredoc");
 		loop_heredoc(limiter, fd);
 		close(fd);
 	}

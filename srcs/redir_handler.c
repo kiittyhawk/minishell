@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 13:47:13 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/25 15:59:03 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/04 19:15:36 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@ int	swap_fd(int fd, t_all *data)
 	if (new_fd == -1)
 	{
 		close(fd);
-		return (-1); //обработать
+		data->err = errno;
+		ft_exit(data->err, "dup");
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
 		close(new_fd);
 		close(fd);
-		return (-1);
+		data->err = errno;
+		ft_exit(data->err, "dup2");
 	}
 	return (new_fd);
 }
@@ -41,13 +43,15 @@ int	swap_fd_in(int fd, t_all *data)
 	if (new_fd == -1)
 	{
 		close(fd);
-		return (-1); //обработать
+		data->err = errno;
+		ft_exit(data->err, "dup");
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		close(new_fd);
 		close(fd);
-		return (-1);
+		data->err = errno;
+		ft_exit(data->err, "dup2");
 	}
 	return (new_fd);
 }
@@ -58,7 +62,6 @@ int	dup_fd(t_cmds *cmd, t_all *data)
 	int	new_fd;
 	t_cmds	*tmp;
 
-	(void)data;
 	fd = 0;
 	new_fd = 0;
 	tmp = cmd;
@@ -73,7 +76,8 @@ int	dup_fd(t_cmds *cmd, t_all *data)
 		if (fd == -1)
 		{
 			close(fd);
-			return (1); //обработать ошибку
+			data->err = errno;
+			ft_exit(data->err, "fd");
 		}
 		if (cmd->redirect->last && cmd->redirect->out)
 			new_fd = swap_fd(fd, data);
@@ -91,12 +95,8 @@ void	redup(int fd, t_all *data)
 	if (data->out && dup2(fd, STDOUT_FILENO) == -1)
 	{
 		close(fd);
-		return ;
-	}
-	if (!data->out && dup2(fd, STDIN_FILENO) == -1)
-	{
-		close(fd);
-		return ;
+		data->err = errno;
+		ft_exit(data->err, "dup2");
 	}
 	close(fd);
 }

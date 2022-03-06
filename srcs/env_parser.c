@@ -6,19 +6,19 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 17:15:52 by jgyles            #+#    #+#             */
-/*   Updated: 2022/03/03 21:03:30 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 19:37:40 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_env	*init_elem(char *key, char *sep, char *val)
+t_env	*init_elem(char *key, char *sep, char *val, t_all *data)
 {
 	t_env	*elem;
 
 	elem = (t_env *)malloc(sizeof(t_env));
 	if (!elem)
-		return (NULL);
+		malloc_err(errno, data);
 	elem->key = key;
 	elem->sep = sep;
 	elem->value = val;
@@ -76,7 +76,7 @@ void	add_value(char *key, char *sep, char *value, t_env **envp)
 }
 
 /*принимает строку и добавляет ее к структуре envp*/
-void	add_env(char *env, t_env **envp)
+void	add_env(char *env, t_env **envp, t_all *data)
 {
 	int		i;
 	char	*key;
@@ -87,20 +87,14 @@ void	add_env(char *env, t_env **envp)
 	sep = NULL;
 	val = NULL;
 	while (env[i] && (env[i] == '_' || ft_isalnum(env[i])))
-	{
 		i++;
-	}
 	key = ft_substr(env, 0, i);
 	if (ft_strchr(env, '='))
-	{
 		sep = ft_substr(env, i, 1);
-	}
 	if (env[i + 1])
-	{
 		val = ft_strdup(&env[i + 1]);
-	}
 	if (!key_is(key, envp))
-		add_elem(envp, init_elem(key, sep, val));
+		add_elem(envp, init_elem(key, sep, val, data));
 	else
 		add_value(key, sep, val, envp);
 }
@@ -115,7 +109,7 @@ void	parse_env(char **env, t_all *data)
 	tmp = data;
 	while (env[++i])
 	{
-		add_env(env[i], data->env);
+		add_env(env[i], data->env, data);
 		tmp = data;
 	}
 	data = tmp;

@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 16:35:54 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/26 11:58:49 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 20:58:01 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,29 @@ void	set_flag(t_cmds *cmd)
 	}
 }
 
-int	is_buildin(t_cmds *cmd)
-{
-	if (cmd->flag > 0)
-		return (1);
-	if (cmd->flag == 0)
-		return (0);
-	return (-1);
-}
-
-void	determinant_flag(t_all *data, t_cmds *cmd)
+int	determinant_flag(t_all *data, t_cmds *cmd)
 {
 	if (cmd->flag == 1)
-		echo_buildin(cmd->args);
+		return(echo_buildin(cmd->args));
 	if (cmd->flag == 2)
-		cd_buildin(cmd->args);
+		// cd_buildin(cmd->args);
 	if (cmd->flag == 3)
-		pwd_buildin();
+		return(pwd_buildin());
 	if (cmd->flag == 4)
+	{
 		export_buildin(data, cmd->args);
+		return (data->err);
+	}
 	if (cmd->flag == 5)
-		unset(data, cmd->args);
+	{
+		ft_builtin_unset(cmd->args, *(data->env), data);
+		return (data->err);
+	}
 	if (cmd->flag == 6)
-		env_buildin(data->env, cmd->args);
+		return(env_buildin(data->env, cmd->args));
 	if (cmd->flag == 7)
-		return ;
+		return(exit_cmd(data, cmd));
+	return (0);
 }
 
 void	ft_pipe(t_all *data)
@@ -76,7 +74,7 @@ void	ft_pipe(t_all *data)
 	{
 		data->fd[i] = malloc(2 * sizeof(int));
 		if (!data->fd)
-			return ;
+			malloc_err(errno, data);
 		if (pipe(data->fd[i]) == -1)
 		{
 			while (--i)
@@ -84,7 +82,8 @@ void	ft_pipe(t_all *data)
 				close(data->fd[i][0]);
 				close(data->fd[i][1]);
 			}
-			/*обработать errno*/
+			data->err = errno;
+			ft_exit(data->err, "pipe");
 		}
 		i++;
 	}
@@ -108,7 +107,7 @@ void	executor(t_all *data)
 		if (data->cmd_count == 1 && data->cmd->flag)
 		{
 			fd = dup_fd(data->cmd, data);
-			determinant_flag(data, data->cmd);
+			data->err = determinant_flag(data, data->cmd);
 			redup(fd, data);
 		}
 		// while (cmd)

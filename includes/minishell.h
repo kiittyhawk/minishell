@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:25:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/03/02 21:37:55 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 20:56:13 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "const.h"
+# include <stdbool.h>
 
 typedef struct s_env
 {
@@ -85,13 +87,13 @@ int		check_syntax(char *line, t_all *data);
 int		parser(char *line, t_all *data);
 
 /*env_parser*/
-void	add_env(char *env, t_env **envp);
+void	add_env(char *env, t_env **envp, t_all *data);
 void	parse_env(char **env, t_all *data);
-t_env	*init_elem(char *key, char *sep, char *val);
+t_env	*init_elem(char *key, char *sep, char *val, t_all *data);
 void	add_elem(t_env **head, t_env *elem);
 
 /*init_struct*/
-t_env	**init_env();
+t_env	**init_env(t_all *data);
 void	init_struct(t_all **data);
 
 /*line_handler*/
@@ -105,13 +107,17 @@ char	*double_quotes_handler(char *line, int *i, t_all *data);
 char	*return_err(char *line, int *i, t_all *data);
 
 /*buildins*/
-void	env_buildin(t_env **envp, char **args);
+int		env_buildin(t_env **envp, char **args);
 int		pwd_buildin(void);
 void	export_buildin(t_all *data, char **args);
-int		unset(t_all *data, char **args);
 int		cd_buildin(char **args);
-void	echo_buildin(char **args);
+int		echo_buildin(char **args);
 void	ft_putstr(char *str);
+int		ft_exit(int errnum, char *msg);
+int		exit_cmd(t_all *data, t_cmds *cmd);
+bool	ft_env_remove(t_env *env, char *key);
+void		ft_builtin_unset(char **args, t_env *env, t_all *data);
+void	ft_env_del(t_env *env, void (*del)(void*));
 
 /*sort_env*/
 char	*find_next(char **keys, t_env **env, int i);
@@ -134,11 +140,11 @@ void	executor(t_all *data);
 void	set_flag(t_cmds *cmd);
 
 /*envp_array*/
-char	**create_array_envp(char **envp);
+char	**create_array_envp(char **envp, t_all *data);
 int		count_str(char **envp);
 
 /*parse_cmd*/
-char	**cmd_split(char **array, t_cmds *cmd);
+char	**cmd_split(char **array, t_cmds *cmd, t_all *data);
 char	**check_redir(char **array);
 int		count_elems(char **args);
 int		is_redirect(char ch);
@@ -163,6 +169,11 @@ void	free_array(char **array);
 void	ft_handler_sigint(int sig);
 
 /*heredoc*/
-void	heredoc(char *limiter);
+void	heredoc(char *limiter, t_all *data);
+
+/*print_err*/
+int		print_err(int errnum, char *msg);
+void	malloc_err(int errnum, t_all *data);
+void	args_err();
 
 #endif

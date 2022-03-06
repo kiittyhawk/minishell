@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 17:19:32 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/28 17:47:14 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/04 18:01:31 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	get_count(char **args)
 	return (count);
 }
 
-void	echo_buildin(char **args)
+int	echo_buildin(char **args)
 {
 	int	flag;
 	int	i;
@@ -54,4 +54,5 @@ void	echo_buildin(char **args)
 	}
 	if (!flag)
 		ft_putchar('\n');
+	return (0);
 }

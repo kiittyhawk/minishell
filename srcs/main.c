@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 21:29:50 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/28 17:44:36 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 20:29:56 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,21 @@ void	minishell(char *buf, t_all *data)
 		}
 		buf = readline("minishell>  ");
 		if (!buf)
-			return ; //error
+			ft_exit(1, NULL);
 		if (buf)
 			add_history(buf);
-		if (ft_strchr(buf, ';'))
-			cmds = ft_split(buf, ';');
 		if (is_empty(buf))
 			continue ;
-		else if (cmds)
+		else if (parser(buf, data) == 0)
 		{
-			while (cmds[++i] && parser(cmds[i], data) == 0)
+			if (ft_strchr(buf, ';'))
+				cmds = ft_split(buf, ';');
+			if (cmds)
+				while (cmds[++i] && parser(cmds[i], data) == 0)
+					executor(data);
+			else
 				executor(data);
 		}
-		else if (parser(buf, data) == 0)
-			executor(data);
 		free_array(cmds);
 	}
 }
@@ -81,8 +82,8 @@ int	main(int ac, char **av, char **env)
 	init_struct(&data);
 	buf = NULL;
 	if (ac != 1)
-		exit(0);
-	data->envp = create_array_envp(env);
+		args_err();
+	data->envp = create_array_envp(env, data);
 	parse_env(env, data);
 	shlvl_increment(*data->env);
 	minishell(buf, data);

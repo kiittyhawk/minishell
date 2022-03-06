@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_builtin.c                                      :+:      :+:    :+:   */
+/*   ft_env_del.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: llornel <llornel@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/07 15:05:47 by jgyles            #+#    #+#             */
-/*   Updated: 2022/03/04 18:04:55 by jgyles           ###   ########.fr       */
+/*   Created: 2022/02/20 00:39:37 by llornel           #+#    #+#             */
+/*   Updated: 2022/02/20 00:39:52 by llornel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
-int	pwd_buildin(void)
+void	ft_env_del(t_env *env, void (*del)(void*))
 {
-	char	*buf;
-
-	buf = NULL;
-	buf = getcwd(buf, 0);
-	if (buf)
+	if (env == NULL || del == NULL)
+		return ;
+	if (env)
 	{
-		printf("%s\n", buf);
-		free (buf);
+		(*del)(env->key);
+		(*del)(env->value);
+		free(env);
 	}
-	else
-	{
-		printf("minishell: pwd: %s\n", strerror(errno));
-		return (errno);
-	}
-	return (0);
 }

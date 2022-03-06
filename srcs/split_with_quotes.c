@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 13:56:52 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/24 18:58:11 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 20:54:46 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,6 @@ static size_t	ft_count_words(char const *s, char c)
 	return (len);
 }
 
-static char	**ft_clean(char **array)
-{
-	size_t	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free (array[i]);
-		i++;
-	}
-	free (array);
-	return (NULL);
-}
-
 /*считает длину элемента*/
 static size_t	ft_words_len(char const *s, char c)
 {
@@ -82,7 +68,7 @@ static size_t	ft_words_len(char const *s, char c)
 }
 
 /*удаляет кавычки из строки*/
-char *is_quotes(const char *s)
+char *is_quotes(const char *s, t_all *data)
 {
 	int			i;
 	int			j;
@@ -97,7 +83,10 @@ char *is_quotes(const char *s)
 	}
 	str = malloc((i + 1) * sizeof(char));
 	if (!str)
+	{
+		data->err = errno;
 		return (NULL);
+	}
 	j = 1;
 	while (s[j] && s[j] != '\'' && s[j] != '"')
 	{
@@ -109,7 +98,7 @@ char *is_quotes(const char *s)
 }
 
 /*парсит строку на аргументы для команд, включая аргументы в кавычках*/
-char	**split_with_quotes(char const *s, char c)
+char	**split_with_quotes(char const *s, char c, t_all *data)
 {
 	char		**array;
 	size_t		len_str;
@@ -121,19 +110,20 @@ char	**split_with_quotes(char const *s, char c)
 	len_str = ft_count_words(s, c);
 	array = ft_calloc(sizeof(char *), (len_str + 1));
 	if (!array)
-		return (NULL);
+		malloc_err(errno, data);
 	while (i < len_str)
 	{
 		while (*s == c && *s)
 			s++;
 		if (*s == '"' || *s == '\'')
-		{
-			array[i] = is_quotes(s);
-		}
+			array[i] = is_quotes(s, data);
 		else
 			array[i] = ft_substr(s, 0, ft_words_len(s, c));
 		if (array[i] == NULL)
-			return (ft_clean(array));
+		{
+			free_array(array);
+			malloc_err(data->err, data);
+		}
 		s = s + ft_words_len(s, c);
 		i++;
 	}

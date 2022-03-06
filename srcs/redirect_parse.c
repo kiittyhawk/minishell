@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/16 15:58:27 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/28 18:00:18 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 20:44:09 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,13 @@ char	*set_filename(char *line, int i)
 	return (ft_substr(line, j, i - j));
 }
 
-t_redir	*init_redir(void)
+t_redir	*init_redir(t_all *data)
 {
 	t_redir	*node;
 
 	node = malloc(sizeof(t_redir));
+	if (!node)
+		malloc_err(errno, data);
 	node->next = NULL;
 	node->type = 1;
 	node->out = 0;
@@ -53,7 +55,7 @@ t_redir	*add_redir(char *line, int *i, t_all *data)
 	t_redir	*node;
 	int		is_heredoc;
 
-	node = init_redir();
+	node = init_redir(data);
 	node->cmd_count = data->cmd_count;
 	is_heredoc = 0;
 	if (line[*i + 1] && line[*i + 1] == '>' && line[*i] == '>')
@@ -115,10 +117,10 @@ char	*remove_redirect(char *line, t_cmds *cmd, int i)
 	tmp = cmd->redirect;
 	while (tmp->next)
 		tmp = tmp->next;
-	if (!tmp->limiter)
-		str = malloc(ft_strlen(line) - tmp->type - ft_strlen(tmp->filename) + 1);
-	else
-		str = malloc(ft_strlen(line) - tmp->type - ft_strlen(tmp->limiter) + 1);
+	// if (!tmp->limiter)
+	// 	str = malloc(ft_strlen(line) - tmp->type - ft_strlen(tmp->filename) + 1);
+	// else
+	// 	str = malloc(ft_strlen(line) - tmp->type - ft_strlen(tmp->limiter) + 1);
 	str = ft_substr(line, 0, i);
 	i = get_len(line, i);
 	str = ft_strjoin(str, ft_substr(line, i, ft_strlen(line) - i));

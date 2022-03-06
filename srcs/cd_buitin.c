@@ -1,34 +1,20 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cd_buidin.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/11 13:56:00 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/21 16:55:14 by jgyles           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   cd_buitin.c                                        :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2022/02/14 16:57:57 by llornel           #+#    #+#             */
+// /*   Updated: 2022/03/03 21:40:08 by jgyles           ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	cd_buildin(char **args)
+int	ft_cd(t_all *data, t_cmds *cmd)
 {
-	(void)args;
-	// if (args[1])
-	// {
-	// 	if (count_str(args) > 2)
-	// 	{
-	// 		printf("minishell: cd: ");
-	// 		ft_putendl_fd(strerror(E2BIG), 2);
-	// 		return (2);
-	// 	}
-	// 	if (chdir(args[0]))
-	// 	{
-	// 		printf("minishell: cd: ");
-	// 		ft_putendl_fd(strerror(errno), 2);
-	// 		return (1);
-	// 	}
-	// }
+	(void)data;
+	(void)cmd;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 15:44:19 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/28 17:49:07 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 20:56:29 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	count_elems(char **args)
 	return (len);
 }
 
-char	**cmd_split(char **array, t_cmds *cmd)
+char	**cmd_split(char **array, t_cmds *cmd, t_all *data)
 {
 	char	**args;
 	int		i;
@@ -41,6 +41,8 @@ char	**cmd_split(char **array, t_cmds *cmd)
 	{
 		cmd->cmd = ft_strdup(array[0]);
 		args = malloc(sizeof(char *) * (count_elems(array) + 1));
+		if (!args)
+			malloc_err(errno, data);
 		while (array[i])
 		{
 			args[i] = ft_strdup(array[i]);

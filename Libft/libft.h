@@ -56,6 +56,8 @@ char	*ft_strchr(const char *str, int ch);
 
 int		ft_strcmp(const char *s1, const char *s2);
 
+void	ft_memdel(void *ptr);
+
 char	*ft_strdup(const char *str);
 
 char	*ft_strjoin(char const *s1, char const *s2);

@@ -6,7 +6,7 @@
 /*   By: jgyles <jgyles@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 13:04:37 by jgyles            #+#    #+#             */
-/*   Updated: 2022/02/26 11:48:14 by jgyles           ###   ########.fr       */
+/*   Updated: 2022/03/06 19:37:24 by jgyles           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,18 @@ void	export_buildin(t_all *data, char **args)
 	{
 		while (args && args[i])
 		{
-			if (skip_empty(args[i]))
-				return ;
-			add_env(args[i], data->env);
-			sorting(data->env, 0);
+			if (skip_empty(args[i]) || ft_isdigit(args[i][0]))
+			{
+				ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+				ft_putstr_fd(args[i], STDERR_FILENO);
+				ft_putstr_fd("\': not a valid identifier\n", STDERR_FILENO);
+				data->err = 1;
+			}
+			else
+			{
+				add_env(args[i], data->env, data);
+				sorting(data->env, 0);
+			}
 			i++;
 		}
 	}
